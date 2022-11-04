@@ -8,7 +8,7 @@ Theophilio is a contemporary ready-to-wear label celebrating culture, community,
 
 ## How It's Made:
 
-**Tech used:** Liquid, HTML, CSS, JavaScript
+**Tech used:** Liquid, SCSS, JavaScript
 
 ## Lessons Learned:
 The Shopify platform uses Liquid code to modify the UI inside Shopify. Edits are often required in both locations for your site to appear as you want it.
