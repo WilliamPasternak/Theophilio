@@ -1,9 +1,11 @@
 # Theophilio Redesign
-Theophilio is a contemporary ready-to-wear label celebrating culture, community, and diversity. The Brooklyn-based label produces a range of bold staples that nod to Jamaica’s dancehall culture and New York’s restless urban energy. I redesigned the home and product pages to improve the look, feel and functionality of the site. 
+Theophilio is a contemporary ready-to-wear label celebrating culture, community, and diversity. The Brooklyn-based label produces a range of bold staples that nod to Jamaica’s dancehall culture and New York’s restless urban energy. 
+
+I redesigned the home and product pages to improve the look, feel and functionality of the site. 
 
 **Link to project:**  https://theophilio.com/ (Changes not yet live)
 
-![Theophilio Site Redesign Walkthrough Gif]()
+![Theophilio Site Redesign Walkthrough Gif](https://github.com/WilliamPasternak/Theophilio/blob/main/Theophilio.png)
 
 
 ## How It's Made:
