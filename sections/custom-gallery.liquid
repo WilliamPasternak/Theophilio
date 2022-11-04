@@ -1,0 +1,472 @@
+<div class="grid flex grid--no-gutters image-bar image-bar--{{ section.settings.section_height }} blocks-16-9 autoplay"
+data-section-id="{{ section.id }}" data-section-type="custom-gallery" >
+  {% comment %} {% case section.blocks.size %}
+    {% when 1 %}
+      {%- assign column_size = '' -%}
+    {% when 2 %}
+      {%- assign column_size = 'medium-up--one-half' -%}
+    {% when 3 %}
+      {%- assign column_size = 'medium-up--one-third' -%}
+    {% else %}
+      {%- assign column_size = 'medium-up--one-quarter' -%}
+  {% endcase %} {% endcomment %}
+
+  {% for block in section.blocks %}
+  {% if block.type == "product" %}
+    {%- assign product = all_products[block.settings.featured_product] -%}
+    {%- assign current_variant = product.selected_or_first_available_variant -%}
+    <div class="js fl-25" {{ block.shopify_attributes }}>
+      <a class="image-bar__link" href="/products/{{ product.handle }}">
+        <div class=" box lazyload {% if block.settings.hover_image != blank  %}hover-parent-img{% endif %}"
+             data-bgset="{% include 'bgset', image: product.images[0] %}"
+             data-sizes="auto"
+             data-parent-fit="cover"
+             style="background-position: center; background-image: url('{{ product.images[0] | img_url: '2048x2048' }});">
+             {% if block.settings.hover_image != blank %}
+              <div class="hover-img" style="background-position: center; background-image: url('{{ block.settings.hover_image | img_url: '1920x1080' }});";"></div>
+             {% endif %}
+            <div class="{% if block.settings.cta_label != blank or block.settings.link != blank %} image-bar__overlay{% endif %}">
+
+              <div class="image-bar__text image-bar__caption">
+                <h3 class="">{{ product.title | escape }}</h3>
+                {% include 'product-price', variant: product.selected_or_first_available_variant, product: product, show_vendor: show_vendor %}
+              </div>
+            </div>
+        </div>
+      </a>
+    </div>
+  {% else %}
+    <div class="fl-25 js" {{ block.shopify_attributes }}>
+      {% if block.settings.link != blank %}
+        <a class="image-bar__link " href="{{ block.settings.link }}">
+          <div class="box  lazyload"
+               data-bgset="{% include 'bgset', image: block.settings.image %}"
+               data-sizes="auto"
+               data-parent-fit="cover"
+               style="background-position: {{ block.settings.alignment }}; background-image: url('{{ block.settings.image | img_url: '2048x2048' }});">
+                {% if block.settings.hover_image != blank %}
+              <div class="hover-img" style="background-position: center; background-image: url('{{ block.settings.hover_image | img_url: '2048x2048' }});";"></div>
+             {% endif %}
+      {% elsif block.settings.video_link != blank %}
+     
+      <div class="video-section-wrapper box  lazyload"
+             data-bgset="{% include 'bgset', image: block.settings.image %}"
+             data-sizes="auto"
+             data-parent-fit="cover"
+             style="background-position: {{ block.settings.alignment }}; background-image: url('{{ block.settings.image | img_url: '2048x2048' }});">
+          <div id="Video-{{ section.id }}"
+            class="video video--background"
+            data-id="{{ block.settings.video_link.id }}"
+            data-always-autoplay="true"
+            data-type="background"></div>
+      {% elsif block.settings.image != blank %}
+        <div class=" box  lazyload"
+             data-bgset="{% include 'bgset', image: block.settings.image %}"
+             data-sizes="auto"
+             data-parent-fit="cover"
+             style="background-position: {{ block.settings.alignment }}; background-image: url('{{ block.settings.image | img_url: '2048x2048' }});">
+              {% if block.settings.hover_image != blank %}
+              <div class="hover-img" style="background-position: center; background-image: url('{{ block.settings.hover_image | img_url: '2048x2048' }});";"></div>
+             {% endif %}
+      {% else %}
+        <div class="">
+      {% endif %}
+      <div class="box">
+        {% if block.settings.image == blank and block.settings.video_link == blank %}
+          {{ 'image' | placeholder_svg_tag: 'placeholder-svg' }}
+        {% endif %}
+
+        {% if block.settings.cta_label != blank %}
+          <div class="image-bar__text image-bar__caption">
+            <h3 class="">{{ block.settings.cta_label | escape }}</h3>
+          </div>
+        {% endif %}
+      </div>
+      {% if block.settings.link != blank %}
+        </div></a>
+      {% else %}
+        </div>
+      {% endif %}
+    </div>
+    <noscript>
+      <div class="grid__item {{ column_size }}" {{ block.shopify_attributes }}>
+
+        <div class="" style="background-image: url({{ block.settings.image | img_url: '2048x2048' }});"></div>
+      </div>
+    </noscript>
+  {% endif %}
+  {% endfor %}
+</div>
+
+{% if section.blocks.size == 0 %}
+  {% include 'no-blocks' %}
+{% endif %}
+
+ <script>
+        var colors = ['#00492B', '#9BFF40', '#7CFF4E', '#CDFFD2'];
+        var wrap = document.querySelectorAll('.fl-25 .video-section-wrapper');
+        for (var j = 0; j < wrap.length; j++) {
+          wrap[j].style.backgroundColor = colors[Math.floor(Math.random() * colors.length)]
+        }
+</script>
+
+{% schema %}
+{
+  "name": {
+    "en": " 4:5 Gallery"
+  },
+  "class": "index-section index-section--flush",
+  "settings": [
+    {
+      "type": "select",
+      "id": "section_height",
+      "label": {
+        "da": "Højde på afsnit",
+        "de": "Bereichs-Höhe",
+        "en": "Section height",
+        "es": "Altura de la sección",
+        "fi": "Osan korkeus",
+        "fr": "Hauteur de la section",
+        "hi": "सेक्शन की ऊंचाई",
+        "it": "Altezza sezione",
+        "ja": "セクションの高さ",
+        "ko": "섹션 높이",
+        "ms": "Ketinggian bahagian",
+        "nb": "Høyde på del",
+        "nl": "Sectiehoogte",
+        "pt-BR": "Altura da seção",
+        "pt-PT": "Altura da secção",
+        "sv": "Sektionshöjd",
+        "th": "ความสูงของส่วน",
+        "zh-CN": "分区高度",
+        "zh-TW": "區塊高度"
+      },
+      "default": "medium",
+      "options": [
+        {
+          "label": {
+            "da": "Ekstra lille",
+            "de": "Extra klein",
+            "en": "Extra Small",
+            "es": "Extra pequeña",
+            "fi": "Erikoispieni",
+            "fr": "Très petite",
+            "hi": "अतिरिक्त छोटा",
+            "it": "Molto piccola",
+            "ja": "極小",
+            "ko": "특소",
+            "ms": "Lebih Kecil",
+            "nb": "Ekstra liten",
+            "nl": "Extra klein",
+            "pt-BR": "Muito pequeno",
+            "pt-PT": "Extra pequeno",
+            "sv": "Extra liten",
+            "th": "ขนาดเล็กพิเศษ",
+            "zh-CN": "特小",
+            "zh-TW": "超小型"
+          },
+          "value": "x-small"
+        },
+        {
+          "label": {
+            "da": "Lille",
+            "de": "Klein",
+            "en": "Small",
+            "es": "Pequeña",
+            "fi": "Pieni",
+            "fr": "Petite",
+            "hi": "छोटा",
+            "it": "Piccolo",
+            "ja": "小",
+            "ko": "스몰",
+            "ms": "Kecil",
+            "nb": "Liten",
+            "nl": "Klein",
+            "pt-BR": "Pequeno",
+            "pt-PT": "Pequeno",
+            "sv": "Liten",
+            "th": "เล็ก",
+            "zh-CN": "小",
+            "zh-TW": "小型"
+          },
+          "value": "small"
+        },
+        {
+          "label": {
+            "da": "Medium",
+            "de": "Mittel",
+            "en": "Medium",
+            "es": "Mediana",
+            "fi": "Keskisuuri",
+            "fr": "Moyenne",
+            "hi": "मध्यम",
+            "it": "Medio",
+            "ja": "中",
+            "ko": "보통",
+            "ms": "Sederhana",
+            "nb": "Middels",
+            "nl": "Gemiddeld",
+            "pt-BR": "Médio",
+            "pt-PT": "Médio",
+            "sv": "Medium",
+            "th": "ปานกลาง",
+            "zh-CN": "中等",
+            "zh-TW": "中等"
+          },
+          "value": "medium"
+        },
+        {
+          "label": {
+            "da": "Stor",
+            "de": "Groß",
+            "en": "Large",
+            "es": "Grande",
+            "fi": "Suuri",
+            "fr": "Grande",
+            "hi": "बड़ा",
+            "it": "Grande",
+            "ja": "大",
+            "ko": "라지",
+            "ms": "Besar",
+            "nb": "Stor",
+            "nl": "Groot",
+            "pt-BR": "Grande",
+            "pt-PT": "Grande",
+            "sv": "Stor",
+            "th": "ใหญ่",
+            "zh-CN": "大",
+            "zh-TW": "大型"
+          },
+          "value": "large"
+        },
+        {
+          "label": {
+            "da": "Ekstra stor",
+            "de": "Extra groß",
+            "en": "Extra Large",
+            "es": "Extra grande",
+            "fi": "Erikoissuuri",
+            "fr": "Très grande",
+            "hi": "अतिरिक्त बड़ा",
+            "it": "Molto grande",
+            "ja": "特大",
+            "ko": "특대",
+            "ms": "Lebih Besar",
+            "nb": "Ekstra stort",
+            "nl": "Extra groot",
+            "pt-BR": "Muito grande",
+            "pt-PT": "Extra grande",
+            "sv": "Extra stor",
+            "th": "ขนาดใหญ่พิเศษ",
+            "zh-CN": "特大",
+            "zh-TW": "超大型"
+          },
+          "value": "x-large"
+        }
+      ]
+    }
+  ],
+  "blocks": [
+    {
+      "type": "image",
+      "name": {
+        "en": "Custom Content"
+      },
+      "settings": [
+        {
+          "type": "video_url",
+          "id": "video_link",
+          "label": {
+            "da": "Videolink",
+            "de": "Video-Link",
+            "en": "Video link",
+            "es": "Enlace de video",
+            "fi": "Videolinkki",
+            "fr": "Lien de la vidéo",
+            "hi": "वीडियो लिंक",
+            "it": "Link video",
+            "ja": "ビデオリンク",
+            "ko": "동영상 링크",
+            "ms": "Pautan video",
+            "nb": "Videokobling",
+            "nl": "Videolink",
+            "pt-BR": "Link do vídeo",
+            "pt-PT": "Ligação do vídeo",
+            "sv": "Videolänk",
+            "th": "ลิงก์วิดีโอ",
+            "zh-CN": "视频链接",
+            "zh-TW": "影片連結"
+          },
+          "accept": [
+            "youtube"
+          ]
+        },
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": {
+            "da": "Billede",
+            "de": "Foto",
+            "en": "Image",
+            "es": "Imagen",
+            "fi": "Kuva",
+            "fr": "Image",
+            "hi": "इमेज",
+            "it": "Immagine",
+            "ja": "画像",
+            "ko": "이미지",
+            "ms": "Imej",
+            "nb": "Bilde",
+            "nl": "Afbeelding",
+            "pt-BR": "Imagem",
+            "pt-PT": "Imagem",
+            "sv": "Bild",
+            "th": "รูปภาพ",
+            "zh-CN": "图片",
+            "zh-TW": "圖片"
+          }
+        },
+        {
+          "type": "image_picker",
+          "id": "hover_image",
+          "label": {
+            "en": "Image on Hover"
+          }
+        },
+        {
+          "type": "url",
+          "id": "link",
+          "label": {
+            "da": "Link",
+            "de": "Link",
+            "en": "Link",
+            "es": "Enlace",
+            "fi": "Linkki",
+            "fr": "Lien",
+            "hi": "लिंक",
+            "it": "Link",
+            "ja": "リンク",
+            "ko": "링크",
+            "ms": "Pautan",
+            "nb": "Kobling",
+            "nl": "Link",
+            "pt-BR": "Link",
+            "pt-PT": "Ligação",
+            "sv": "Länk",
+            "th": "ลิงก์",
+            "zh-CN": "链接",
+            "zh-TW": "連結"
+          },
+          "info": {
+            "da": "Valgfri",
+            "de": "Optional",
+            "en": "Optional",
+            "es": "Opcional",
+            "fi": "Valinnainen",
+            "fr": "Facultatif",
+            "hi": "वैकल्पिक",
+            "it": "Facoltativo",
+            "ja": "オプション",
+            "ko": "선택 사항",
+            "ms": "Opsyenal",
+            "nb": "Valgfritt",
+            "nl": "Optioneel",
+            "pt-BR": "Opcional",
+            "pt-PT": "Opcional",
+            "sv": "Valfritt",
+            "th": "ไม่จำเป็น",
+            "zh-CN": "可选",
+            "zh-TW": "(選填)"
+          }
+        },
+        {
+          "type": "text",
+          "id": "cta_label",
+          "label": {
+            "da": "Billedtekst",
+            "de": "Unterschrift",
+            "en": "Caption",
+            "es": "Leyenda",
+            "fi": "Kuvateksti",
+            "fr": "Légende",
+            "hi": "कैप्शन",
+            "it": "Didascalia",
+            "ja": "キャプション",
+            "ko": "캡션",
+            "ms": "Kapsyen",
+            "nb": "Bildetekst",
+            "nl": "Bijschrift",
+            "pt-BR": "Legenda",
+            "pt-PT": "Legenda",
+            "sv": "Rubrik",
+            "th": "คำบรรยาย",
+            "zh-CN": "字幕",
+            "zh-TW": "說明"
+          }
+        }
+      ]
+    },
+    {
+      "type": "product",
+      "name": {
+        "en": "Product"
+      },
+      "settings": [
+        {
+          "type": "product",
+          "id": "featured_product",
+          "label": {
+            "en": "Product"
+          }
+        },
+        {
+          "type": "image_picker",
+          "id": "hover_image",
+          "label": {
+            "en": "Image on Hover"
+          }
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": {
+        "en": "16:9 Gallery"
+      },
+      "category": {
+        "da": "Billede",
+        "de": "Foto",
+        "en": "Image",
+        "es": "Imagen",
+        "fi": "Kuva",
+        "fr": "Image",
+        "hi": "इमेज",
+        "it": "Immagine",
+        "ja": "画像",
+        "ko": "이미지",
+        "ms": "Imej",
+        "nb": "Bilde",
+        "nl": "Afbeelding",
+        "pt-BR": "Imagem",
+        "pt-PT": "Imagem",
+        "sv": "Bild",
+        "th": "รูปภาพ",
+        "zh-CN": "图片",
+        "zh-TW": "圖片"
+      },
+      "blocks": [
+        {
+          "type": "image"
+        },
+        {
+          "type": "image"
+        },
+        {
+          "type": "image"
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}
